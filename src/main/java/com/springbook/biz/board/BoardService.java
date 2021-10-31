@@ -17,6 +17,6 @@ public interface BoardService {
 	BoardDTO getBoard(BoardDTO dto);
 
 	// 글 목록 조회
-	List<BoardDTO> getBoardList();
+	List<BoardDTO> getBoardList(BoardDTO dto);
 
 }

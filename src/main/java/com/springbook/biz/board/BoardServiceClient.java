@@ -22,7 +22,7 @@ public class BoardServiceClient {
 		boardService.insertBoard(dto);
 
 		// 글 목록 조회 기능 테스트
-		List<BoardDTO> boardList = boardService.getBoardList();
+		List<BoardDTO> boardList = boardService.getBoardList(dto);
 		for (BoardDTO board : boardList) {
 			System.out.println(board.toString());
 		}

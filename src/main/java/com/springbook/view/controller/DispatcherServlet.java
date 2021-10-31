@@ -51,14 +51,14 @@ public class DispatcherServlet extends HttpServlet {
 			if (user != null) {
 				response.sendRedirect("getBoardList.do");
 			} else {
-				response.sendRedirect("login.do");
+				response.sendRedirect("login.jsp");
 			}
 
 		} else if (path.equals("/logout.do")) {
 			System.out.println("로그아웃 처리");
 
 			session.invalidate();
-			response.sendRedirect("login.do");
+			response.sendRedirect("login.jsp");
 
 		} else if (path.equals("/insertBoard.do")) {
 			System.out.println("글 등록 처리");

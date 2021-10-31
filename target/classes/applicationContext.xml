@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- 스프링 기본 어노테이션 설정 -->
+	<context:component-scan
+		base-package="com.springbook.biz"></context:component-scan>
+
+	<!-- AOP 어노테이션 설정 -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+
+	<!-- 트랜잭션 매니저 관련 설정 -->
+
+	<!-- properties 파일 불러오기 -->
+	<context:property-placeholder
+		location="classpath:config/database.properties" />
+
+	<!-- DataSource 객체 설정 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<!-- jdbcTemplate 객체 생성, DataSource Setter Injection -->
+	<bean id="jdbcTemplate"
+		class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 트랜잭션 매니저 객체 생성, DataSource Setter Injection -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 트랜잭션 매니저 어드바이스 등록, 적용할 메소드 필터링 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 트랜잭션 매니저 등록 -->
+	<aop:config>
+		<aop:pointcut id="txPointcut"
+			expression="execution(* com.springbook.biz..*(..))" />
+		<aop:advisor pointcut-ref="txPointcut"
+			advice-ref="txAdvice" />
+	</aop:config>
+
+</beans>

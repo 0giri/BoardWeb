@@ -21,7 +21,7 @@ public class LoginController implements Controller {
 		dto.setPwd(password);
 
 		UserDAO userDAO = new UserDAO();
-		UserDTO user = new UserDTO();
+		UserDTO user = userDAO.getUser(dto);
 
 		if (user != null) {
 			return "getBoardList.do";

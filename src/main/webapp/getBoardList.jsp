@@ -1,12 +1,6 @@
-<%@ page import="java.util.List"%>
-<%@ page import="com.springbook.biz.board.impl.BoardDAO"%>
-<%@ page import="com.springbook.biz.board.BoardDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<%
-List<BoardDTO> boardList = (List) session.getAttribute("boardList");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
@@ -42,19 +36,15 @@ List<BoardDTO> boardList = (List) session.getAttribute("boardList");
 				<th bgcolor="orange" width="100">조회수</th>
 			</tr>
 
-			<%
-			for (BoardDTO board : boardList) {
-			%>
-			<tr>
-				<td><%=board.getSeq()%></td>
-				<td align="left"><a href="getBoard.do?seq=<%=board.getSeq()%>"><%=board.getTitle()%></a></td>
-				<td><%=board.getWriter()%></td>
-				<td><%=board.getRegdate()%></td>
-				<td><%=board.getCnt()%></td>
-			</tr>
-			<%
-			}
-			%>
+			<c:forEach items="${boardList}" var="board">
+				<tr>
+					<td>${board.seq}</td>
+					<td align="left"><a href="getBoard.do?seq=${board.seq}">${board.title}</a></td>
+					<td>${board.writer}</td>
+					<td>${board.regdate}</td>
+					<td>${board.cnt}</td>
+				</tr>
+			</c:forEach>
 		</table>
 		<br> <a href="insertBoard.jsp">새글 등록</a>
 	</center>

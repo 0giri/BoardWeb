@@ -1,32 +1,36 @@
 package com.springbook.view.user;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.springbook.biz.user.UserDTO;
 import com.springbook.biz.user.impl.UserDAO;
-import com.springbook.view.controller.Controller;
 
-public class LoginController implements Controller {
+@Controller
+public class LoginController {
+	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
+	public String loginView(@ModelAttribute("user") UserDTO dto) {
+		System.out.println("로그인 화면으로 이동");
+		dto.setId("test");
+		dto.setPwd("test123");
+		return "login.jsp";
+	}
 
-	@Override
-	public String handleRequest(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("로그인 처리");
-
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
-
-		UserDTO dto = new UserDTO();
-		dto.setId(id);
-		dto.setPwd(password);
-
-		UserDAO userDAO = new UserDAO();
+	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
+	public String login(UserDTO dto, UserDAO userDAO, HttpSession session) {
+		if (dto.getId() == null || dto.getId().equals("")) {
+			throw new IllegalArgumentException("아이디는 반드시 입력해야 합니다.");
+		}
 		UserDTO user = userDAO.getUser(dto);
-
 		if (user != null) {
-			return "getBoardList.do";
+			session.setAttribute("userName", user.getName());
+			return "redirect:getBoardList.do";
 		} else {
-			return "login";
+			return "login.jsp";
 		}
 	}
 }

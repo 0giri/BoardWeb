@@ -12,7 +12,7 @@ import com.springbook.biz.common.LogAdvice;
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
 	@Autowired
-	private BoardDAO boardDAO;
+	private BoardDAOSpring boardDAO;
 
 	@Override
 	public void insertBoard(BoardDTO dto) {
@@ -36,6 +36,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardDTO> getBoardList(BoardDTO dto) {
+		System.out.println(boardDAO.getBoardList(dto).toString());
 		return boardDAO.getBoardList(dto);
 	}
 

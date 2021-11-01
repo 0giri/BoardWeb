@@ -22,6 +22,9 @@ public class LoginController {
 
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	public String login(UserDTO dto, UserDAO userDAO, HttpSession session) {
+		if (dto.getId() == null || dto.getId().equals("")) {
+			throw new IllegalArgumentException("아이디는 반드시 입력해야 합니다.");
+		}
 		UserDTO user = userDAO.getUser(dto);
 		if (user != null) {
 			session.setAttribute("userName", user.getName());

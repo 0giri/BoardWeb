@@ -2,6 +2,8 @@ package com.springbook.biz.board;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class BoardDTO {
 	private int seq;
 	private String title;
@@ -9,6 +11,9 @@ public class BoardDTO {
 	private String content;
 	private Date regdate;
 	private int cnt;
+	private String searchCondition;
+	private String searchKeyword;
+	private MultipartFile uploadFile;
 
 	public int getSeq() {
 		return seq;
@@ -32,6 +37,18 @@ public class BoardDTO {
 
 	public int getCnt() {
 		return cnt;
+	}
+
+	public String getSearchCondition() {
+		return searchCondition;
+	}
+
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+
+	public MultipartFile getUploadFile() {
+		return uploadFile;
 	}
 
 	public void setSeq(int seq) {
@@ -58,6 +75,18 @@ public class BoardDTO {
 		this.cnt = cnt;
 	}
 
+	public void setSearchCondition(String searchCondition) {
+		this.searchCondition = searchCondition;
+	}
+
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
+
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
+	
 	@Override
 	public String toString() {
 		return "BoardDTO [seq=" + seq + ", title=" + title + ", writer=" + writer + ", content=" + content
